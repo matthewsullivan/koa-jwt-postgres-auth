@@ -1,0 +1,27 @@
+{
+  "apps": [
+    {
+      "env": {
+        "NODE_ENV": "development",
+        "URL_ORIGIN": "http://127.0.0.1:8081 https://localhost.example.com"
+      },
+      "env_production": {
+        "NODE_ENV": "production",
+        "PGPASSWORD": "postgres",
+        "PGUSER": "postgres",
+        "SIMPLE_SCHEDULER": "true",
+        "URL_ORIGIN": "https://123.456.789.0 https://simple.example.com"
+      },
+      "env_staging": {
+        "NODE_ENV": "staging",
+        "PGPASSWORD": "postgres",
+        "PGUSER": "postgres",
+        "SIMPLE_SCHEDULER": "true",
+        "URL_ORIGIN": "https://123.456.789.0 https://simple-staging.example.com"
+      },
+      "name": "simple-back-end",
+      "script": "./server.js",
+      "watch": true
+    }
+  ]
+}
