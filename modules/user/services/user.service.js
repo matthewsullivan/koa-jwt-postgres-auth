@@ -1,8 +1,7 @@
 const path = require('path');
 
-const {sql} = require('pg-extra');
-
 const {pool} = require(path.resolve('./config/lib/pg'));
+const {sql} = require('pg-extra');
 
 module.exports = {
   /**
@@ -12,7 +11,7 @@ module.exports = {
    */
   getUserById: (userId) => {
     const statement = sql`
-      SELECT id, username, email, first_name, last_name, created 
+      SELECT id, email, first_name, last_name, created 
       FROM public.user
       WHERE id = ${userId};
     `;
@@ -27,15 +26,14 @@ module.exports = {
    */
   registerUser: (user) => {
     const statement = sql`
-      INSERT INTO public.user (username, email, password, first_name, last_name)
+      INSERT INTO public.user (email, password, first_name, last_name)
       VALUES (
-        TRIM(${user.username}),
         TRIM(${user.email.toLowerCase()}),
         TRIM(${user.password}),
         TRIM(${user.firstName}),
         TRIM(${user.lastName})
       )
-      RETURNING id, username, email, first_name, last_name, created;
+      RETURNING id, email, first_name, last_name, created;
     `;
 
     return pool.query(statement);

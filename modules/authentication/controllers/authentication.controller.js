@@ -67,7 +67,6 @@ module.exports = {
           {
             email: user.email,
             id: user.id,
-            username: user.username,
           },
           config.secret,
           {

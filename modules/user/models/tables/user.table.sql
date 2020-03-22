@@ -8,7 +8,6 @@ CREATE TABLE public.user
   first_name varchar(256) NOT NULL,
   last_name varchar(256) NOT NULL,
   password varchar(256) NOT NULL,
-  username varchar(256) NOT NULL,
   
   created timestamptz DEFAULT now() NOT NULL
 );

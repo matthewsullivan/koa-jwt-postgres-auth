@@ -10,7 +10,6 @@ const user = {
   firstName: 'Jane',
   lastName: 'Doe',
   password: '!1A2b3C4d!',
-  username: 'janedoe',
 };
 
 test.serial('Registration should not allow weak password', async (t) => {
@@ -19,7 +18,6 @@ test.serial('Registration should not allow weak password', async (t) => {
     firstName: user.firstName,
     lastName: user.lastName,
     password: 'abcdefg',
-    username: user.username,
   });
 
   t.is(res.status, 400);
@@ -31,19 +29,6 @@ test.serial('Registration should not allow duplicate email', async (t) => {
     firstName: user.firstName,
     lastName: user.lastName,
     password: user.password,
-    username: user.username,
-  });
-
-  t.is(res.status, 400);
-});
-
-test.serial('Registration should not allow duplicate username', async (t) => {
-  const res = await request.post('/api/v1/register/').send({
-    email: user.email,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    password: user.password,
-    username: 'johndoe',
   });
 
   t.is(res.status, 400);
@@ -55,7 +40,6 @@ test.serial('Should register valid user', async (t) => {
     firstName: user.firstName,
     lastName: user.lastName,
     password: user.password,
-    username: user.username,
   });
 
   t.is(res.status, 201);

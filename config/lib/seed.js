@@ -23,7 +23,6 @@ const seed = (() => {
       firstName: 'John',
       lastName: 'Doe',
       password: '!1A2b3C4d!',
-      username: 'johndoe',
     };
 
     ctx.request.body = user;
