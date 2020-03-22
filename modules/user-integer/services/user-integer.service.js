@@ -6,19 +6,28 @@ const {sql} = require('pg-extra');
 module.exports = {
   /**
    * Get current
-   * @param {number} id
+   * @param {number} userId
    * @param {number} current
    * @return {object}
    */
-  getCurrent: (id, current) => {
+  getCurrent: (userId, current) => {
+    if (current) {
+      const statement = sql`
+        UPDATE public.user_integer
+        SET 
+          integer = ${current},
+          updated = now()
+        WHERE user_id = ${userId}
+        RETURNING id, user_id, integer, created, updated;
+    `;
+
+      return pool.query(statement);
+    }
+
     const statement = sql`
-      INSERT INTO public.user_integer (user_id, integer)
-      VALUES (${id}, ${1})
-      ON CONFLICT (user_id) DO UPDATE
-      SET 
-        integer = ${current},
-        updated = now()
-      RETURNING id, user_id, integer, created, updated;
+      SELECT id, user_id, integer, created, updated
+      FROM public.user_integer
+      WHERE user_id = ${userId};
     `;
 
     return pool.query(statement);

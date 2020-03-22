@@ -73,7 +73,10 @@ module.exports = {
     user.password = await encryptPassword(user.password);
 
     try {
-      await service.registerUser(user);
+      const result = await service.registerUser(user);
+      const userId = result.rows[0].id;
+
+      await service.setUserInteger(userId);
 
       ctx.body = {message: 'Succesfully registered.'};
       ctx.status = 201;

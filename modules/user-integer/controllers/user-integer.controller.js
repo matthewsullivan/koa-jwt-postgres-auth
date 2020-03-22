@@ -14,15 +14,19 @@ module.exports = {
     const current = ctx.request.body.current;
     const token = ctx.token;
 
-    console.log(current);
+    if (current < 0) {
+      ctx.body = {
+        message: 'Current must be greator than 0',
+      };
+
+      ctx.status = 400;
+
+      return;
+    }
 
     const result = await service.getCurrent(token.id, current);
 
-    const record = result.rows[0];
-
-    console.log(record);
-
-    ctx.body = record ? record.integer : 0;
+    ctx.body = result.rows[0];
     ctx.status = 200;
   },
 
@@ -32,11 +36,11 @@ module.exports = {
    * @param {object} ctx
    */
   getNext: async (ctx) => {
-    const token = ctx.body.token;
-    const result = await service.getNext(token.id);
-    const record = result.rows[0];
+    const token = ctx.token;
 
-    ctx.body = record ? record.integer : 0;
+    const result = await service.getNext(token.id);
+
+    ctx.body = result.rows[0];
     ctx.status = 200;
   },
 };
