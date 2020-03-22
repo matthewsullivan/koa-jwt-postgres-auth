@@ -1,7 +1,7 @@
-import {test} from 'ava';
-import {resolve} from 'path';
+const {test} = require('ava');
 
-const server = require(resolve('./server.js'));
+const path = require('path');
+const server = require(path.resolve('./server.js'));
 
 const request = require('supertest').agent(server.listen());
 

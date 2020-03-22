@@ -4,14 +4,6 @@ Install dependencies
 
     $ npm install
 
-## Configure
-
-### CORS 
-
-Set origin (client) URL
-
-    $ export URL_ORIGIN='http://127.0.0.1:8081'
-
 ## Setup
 
 Set environment and build database
@@ -24,4 +16,4 @@ Set environment and build database
 
 ## Test
 
-    $ export NODE_ENV=test && npm test
+    $ export NODE_ENV=development && npm run db-init && npm run test

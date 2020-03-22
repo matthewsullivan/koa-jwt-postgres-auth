@@ -1,16 +1,16 @@
-import {env} from 'process';
+const process = require('process');
 
 const config = {
   db: {
-    database: env.DB_DATABASE || 'simple_api',
-    dialect: env.DB_DIALECT || 'postgres',
-    host: env.DB_HOST || 'localhost',
-    port: env.DB_PORT || 5432,
+    database: process.env.DB_DATABASE || 'simple_api',
+    dialect: process.env.DB_DIALECT || 'postgres',
+    host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT || 5432,
   },
-  secret: env.JWT_SECRET || 'jwt-secret',
+  secret: process.env.JWT_SECRET || 'jwt-secret',
   server: {
-    port: env.SERVER_PORT || 3000,
+    port: process.env.SERVER_PORT || 3000,
   },
 };
 
-export default config;
+module.exports = config;
