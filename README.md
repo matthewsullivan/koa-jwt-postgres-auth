@@ -1,12 +1,6 @@
-# Simple Back-end
-
-## Synopsis
-
-Simple back-end using [Koa.js](https://koajs.com)/[PostgreSQL](https://www.postgresql.org)
-
 ## Install
 
-Open terminal at project root and execute
+Install dependencies
 
     $ npm install
 
@@ -20,14 +14,14 @@ Set origin (client) URL
 
 ## Setup
 
-Initialize and seed database
+Set environment and build database
 
     $ export NODE_ENV=development && npm run db-init
 
 ## Serve
 
-    $ export SIMPLE_SCHEDULER="false" && npm run debug
+    $ npm run debug
 
 ## Test
 
-    $ NODE_ENV=test && npm test
+    $ export NODE_ENV=test && npm test

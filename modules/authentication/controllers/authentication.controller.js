@@ -1,15 +1,10 @@
+const jwt = require('jsonwebtoken');
 const passport = require('koa-passport');
 const path = require('path');
-const {RateLimiterMemory} = require('rate-limiter-flexible');
 
 const config = require(path.resolve('./config/env/default'));
 
-const rateLimiter = new RateLimiterMemory(config.limiter);
-
-const roleService = require(path.resolve(
-  './modules/role/services/role.service.js'
-));
-const userService = require(path.resolve(
+const service = require(path.resolve(
   './modules/user/services/user.service.js'
 ));
 
@@ -22,38 +17,10 @@ require(path.resolve('./modules/authentication/strategies/local.js'));
  * @return {object}
  */
 const getUserById = async (userId) => {
-  const roles = [];
-
-  const resultA = await userService.getUserById(userId);
-  const resultB = await roleService.getRolesByUserId(userId);
-
-  const user = resultA.rows[0];
-
-  resultB.rows.forEach((row) => {
-    roles.push(row.role_name);
-  });
-
-  if (user) {
-    user.roles = roles;
-  }
+  const result = await service.getUserById(userId);
+  const user = result.rows[0];
 
   return user;
-};
-
-/**
- * Limit rate
- * @async
- * @param {object} ctx
- * @param {string} key
- */
-const limitRate = async (ctx, key) => {
-  const limiter = await rateLimiter.get(key);
-
-  if (limiter && limiter.remainingPoints <= 0) {
-    ctx.throw(429);
-  }
-
-  await rateLimiter.consume(key);
 };
 
 /**
@@ -85,21 +52,42 @@ module.exports = {
    * @return {object}
    */
   login: async (ctx, next) => {
-    const key = `${ctx.request.body.username}_${ctx.request.ip}`;
+    return passport.authenticate(
+      'local',
+      {session: false},
+      async (error, user) => {
+        if (error || !user) {
+          ctx.body = {
+            authenticated: false,
+            message: 'Authentication failed.',
+          };
 
-    await limitRate(ctx, key);
+          ctx.status = 401;
 
-    return passport.authenticate('local', async (err, user) => {
-      if (err || !user) {
-        ctx.logout();
-        ctx.throw(401);
+          return;
+        }
+
+        const token = jwt.sign(
+          {
+            email: user.email,
+            id: user.id,
+            username: user.username,
+          },
+          config.secret,
+          {
+            expiresIn: '1h',
+          }
+        );
+
+        ctx.body = {
+          authenticated: true,
+          message: 'Succesfully logged in.',
+          token: token,
+        };
+
+        ctx.status = 200;
       }
-
-      ctx.body = user;
-      ctx.login(user);
-
-      await rateLimiter.delete(key);
-    })(ctx, next);
+    )(ctx, next);
   },
 
   /**
@@ -108,9 +96,9 @@ module.exports = {
    * @param {object} ctx
    */
   logout: async (ctx) => {
-    session = null;
-
-    ctx.logout();
-    ctx.status = 204;
+    ctx.body = {
+      authenticated: false,
+      message: 'Succesfully logged out.',
+    };
   },
 };

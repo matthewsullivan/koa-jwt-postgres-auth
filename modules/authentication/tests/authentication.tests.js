@@ -1,6 +1,6 @@
 const {test} = require('ava');
-const path = require('path');
 
+const path = require('path');
 const server = require(path.resolve('./server.js'));
 
 const request = require('supertest').agent(server.listen());
@@ -16,7 +16,6 @@ test.serial('Should login successfully', async (t) => {
     username: admin.username,
   });
 
-  t.is(res.body.roles[0], 'admin');
   t.is(res.status, 200);
 });
 

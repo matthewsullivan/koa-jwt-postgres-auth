@@ -11,7 +11,7 @@ module.exports = {
    */
   getUserByUsername: (username) => {
     const statement = sql`
-      SELECT id, username, email, first_name, last_name, password, created, updated
+      SELECT id, username, email, first_name, last_name, password, created
       FROM public.user
       WHERE username = ${username};
     `;

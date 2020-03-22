@@ -1,0 +1,29 @@
+{
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": ["google", "plugin:prettier/recommended"],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "allowImportExportEverywhere": true,
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "plugins": ["prettier"],
+  "rules": {
+    "max-len": ["off"],
+    "new-cap": "off",
+    "no-invalid-this": "off",
+    "prettier/prettier": "error",
+    "require-jsdoc": "off",
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "never",
+        "asyncArrow": "always",
+        "named": "never"
+      }
+    ]
+  }
+}

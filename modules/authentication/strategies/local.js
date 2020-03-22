@@ -1,13 +1,11 @@
 const argon2 = require('argon2');
 const passport = require('koa-passport');
 const path = require('path');
+
 const LocalStrategy = require('passport-local').Strategy;
 
 const authService = require(path.resolve(
   './modules/authentication/services/authentication.service.js'
-));
-const roleService = require(path.resolve(
-  './modules/role/services/role.service.js'
 ));
 const userService = require(path.resolve(
   './modules/user/services/user.service.js'
@@ -20,20 +18,8 @@ const userService = require(path.resolve(
  * @return {object}
  */
 const getUserById = async (userId) => {
-  const roles = [];
-
-  const resultA = await userService.getUserById(userId);
-  const resultB = await roleService.getRolesByUserId(userId);
-
-  const user = resultA.rows[0];
-
-  resultB.rows.forEach((row) => {
-    roles.push(row.role_name);
-  });
-
-  if (user) {
-    user.roles = roles;
-  }
+  const result = await userService.getUserById(userId);
+  const user = result.rows[0];
 
   return user;
 };
@@ -51,12 +37,12 @@ const validate = async (credentials) => {
     return false;
   }
 
-  const verify = await argon2.verify(
+  const verified = await argon2.verify(
     result.rows[0].password,
     credentials.password
   );
 
-  return verify === true ? await getUserById(result.rows[0].id) : false;
+  return verified ? await getUserById(result.rows[0].id) : false;
 };
 
 /**
@@ -74,8 +60,8 @@ passport.use(
       username: username,
     };
 
-    const result = await validate(credentials);
+    const user = await validate(credentials);
 
-    return result ? done(null, result) : done('invalid', false);
+    return user ? done(null, user) : done('invalid', false);
   })
 );

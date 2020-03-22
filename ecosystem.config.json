@@ -9,17 +9,10 @@
         "NODE_ENV": "production",
         "PGPASSWORD": "postgres",
         "PGUSER": "postgres",
-        "SIMPLE_SCHEDULER": "true",
+        "JWT_SECRET": "[ADD SECRET]",
         "URL_ORIGIN": "https://123.456.789.0 https://simple.example.com"
       },
-      "env_staging": {
-        "NODE_ENV": "staging",
-        "PGPASSWORD": "postgres",
-        "PGUSER": "postgres",
-        "SIMPLE_SCHEDULER": "true",
-        "URL_ORIGIN": "https://123.456.789.0 https://simple-staging.example.com"
-      },
-      "name": "simple-back-end",
+      "name": "simple-api",
       "script": "./server.js",
       "watch": true
     }
