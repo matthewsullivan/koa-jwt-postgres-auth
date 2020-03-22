@@ -22,7 +22,7 @@ const seed = (() => {
       email: 'johndoe@localhost.com',
       firstName: 'John',
       lastName: 'Doe',
-      password: '!1A2b3C4d!',
+      password: '(a1B2c3D4e5F6g)',
     };
 
     ctx.request.body = user;

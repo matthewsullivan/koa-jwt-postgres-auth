@@ -7,7 +7,7 @@ const request = require('supertest').agent(server.listen());
 
 const user = {
   email: 'johndoe@localhost.com',
-  password: '!1A2b3C4d!',
+  password: '(a1B2c3D4e5F6g)',
 };
 
 test.serial('Should login seed user', async (t) => {

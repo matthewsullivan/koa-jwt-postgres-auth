@@ -27,5 +27,4 @@ console.log(`Environment: \t ${process.env.NODE_ENV}`);
 console.log(`Port: \t\t ${config.server.port}`);
 console.log(`\n${new Date().toString()}\n`);
 
-// Allows for testing
 module.exports = app;

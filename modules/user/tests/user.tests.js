@@ -9,7 +9,7 @@ const user = {
   email: 'janedoe@localhost.com',
   firstName: 'Jane',
   lastName: 'Doe',
-  password: '!1A2b3C4d!',
+  password: '(a1B2c3D4e5F6g)',
 };
 
 test.serial('Registration should not allow weak password', async (t) => {
