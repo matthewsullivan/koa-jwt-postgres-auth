@@ -1,6 +1,6 @@
-const path = require('path');
+import {resolve} from 'path';
 
-const userController = require(path.resolve(
+const userController = require(resolve(
   './modules/user/controllers/user.controller.js'
 ));
 
