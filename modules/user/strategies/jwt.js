@@ -14,8 +14,8 @@ const options = {
 /**
  * Use
  * @callback done
- * @param {string} username
- * @param {string} password
+ * @param {object} options
+ * @param {string} token
  * @param {function} done
  * @return {object}
  */

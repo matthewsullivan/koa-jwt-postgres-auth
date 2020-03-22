@@ -4,11 +4,8 @@ const path = require('path');
 
 const LocalStrategy = require('passport-local').Strategy;
 
-const authService = require(path.resolve(
+const service = require(path.resolve(
   './modules/authentication/services/authentication.service.js'
-));
-const userService = require(path.resolve(
-  './modules/user/services/user.service.js'
 ));
 
 /**
@@ -18,7 +15,7 @@ const userService = require(path.resolve(
  * @return {object}
  */
 const getUserById = async (userId) => {
-  const result = await userService.getUserById(userId);
+  const result = await service.getUserById(userId);
   const user = result.rows[0];
 
   return user;
@@ -31,7 +28,7 @@ const getUserById = async (userId) => {
  * @return {boolean|object}
  */
 const validate = async (credentials) => {
-  const result = await authService.getUserByUsername(credentials.username);
+  const result = await service.getUserByEmail(credentials.email);
 
   if (!result.rowCount) {
     return false;
@@ -45,19 +42,22 @@ const validate = async (credentials) => {
   return verified ? await getUserById(result.rows[0].id) : false;
 };
 
+const options = {usernameField: 'email'};
+
 /**
  * Use
  * @callback done
+ * @param {object} options
  * @param {string} username
  * @param {string} password
  * @param {function} done
  * @return {object}
  */
 passport.use(
-  new LocalStrategy(async (username, password, done) => {
+  new LocalStrategy(options, async (username, password, done) => {
     const credentials = {
+      email: username,
       password: password,
-      username: username,
     };
 
     const user = await validate(credentials);

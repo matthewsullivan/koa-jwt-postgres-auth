@@ -6,21 +6,6 @@ const {pool} = require(path.resolve('./config/lib/pg'));
 
 module.exports = {
   /**
-   * Get user by email
-   * @param {string} email
-   * @return {object}
-   */
-  getUserByEmail: (email) => {
-    const statement = sql`
-      SELECT id, username, email, first_name, last_name, created 
-      FROM public.user
-      WHERE email = ${email};
-    `;
-
-    return pool.query(statement);
-  },
-
-  /**
    * Get user by id
    * @param {number} userId
    * @return {object}
@@ -30,21 +15,6 @@ module.exports = {
       SELECT id, username, email, first_name, last_name, created 
       FROM public.user
       WHERE id = ${userId};
-    `;
-
-    return pool.query(statement);
-  },
-
-  /**
-   * Get user by username
-   * @param {string} username
-   * @return {object}
-   */
-  getUserByUsername: (username) => {
-    const statement = sql`
-      SELECT id, username, email, first_name, last_name, created 
-      FROM public.user
-      WHERE username = ${username};
     `;
 
     return pool.query(statement);

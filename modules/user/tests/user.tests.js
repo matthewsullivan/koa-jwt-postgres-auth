@@ -69,8 +69,8 @@ test.serial('Should block secured route', async (t) => {
 
 test.serial('Should login and allow access to secured route', async (t) => {
   const loginResult = await request.post('/api/v1/login').send({
+    email: user.email,
     password: user.password,
-    username: user.username,
   });
 
   const profileResult = await request
