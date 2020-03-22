@@ -21,7 +21,6 @@ const secured = async (ctx, next) => {
     'jwt',
     {session: false},
     async (error, token) => {
-      console.log(token);
       if (error || !token) {
         ctx.body = {
           authenticated: false,
@@ -35,11 +34,12 @@ const secured = async (ctx, next) => {
 
       ctx.body = {
         authenticated: true,
-        message: 'Succesfully logged in.',
         token: token,
       };
 
       ctx.status = 200;
+
+      return next();
     }
   )(ctx, next);
 };

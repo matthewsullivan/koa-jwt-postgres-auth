@@ -47,9 +47,9 @@ module.exports = {
     const result = await service.getUserById(params.id);
     const user = result.rows[0];
 
-    // console.log(ctx);
+    ctx.status = 200;
 
-    ctx.body = user;
+    ctx.body = user ? user : {message: 'No user found.'};
   },
 
   /**
