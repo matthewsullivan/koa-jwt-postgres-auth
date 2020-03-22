@@ -10,14 +10,14 @@ const service = require(path.resolve(
  * Test password strength
  * @async
  * @param {object} ctx
- * @return {boolean}
+ * @return {array}
  */
 const testPasswordStrength = async (ctx) => {
   const user = ctx.request.body;
 
   const owaspTest = owasp.test(user.password);
 
-  return !!!owaspTest.errors.length;
+  return owaspTest.errors;
 };
 
 /**
@@ -58,10 +58,14 @@ module.exports = {
    * @param {object} ctx
    */
   registerUser: async (ctx) => {
-    const passed = await testPasswordStrength(ctx);
+    const errors = await testPasswordStrength(ctx);
 
-    if (!passed) {
-      // password not strong enough
+    if (!!errors.length) {
+      ctx.body = {
+        message: 'Password not strong enough.',
+        rules: errors,
+      };
+
       ctx.status = 400;
 
       return;
@@ -73,6 +77,8 @@ module.exports = {
     const result = await service.registerUser(password);
 
     if (result.rowCount) {
+      ctx.body = {message: 'Succesfully registered.'};
+
       ctx.status = 201;
     }
   },

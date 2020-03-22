@@ -6,7 +6,7 @@ const controller = require(path.resolve(
 ));
 
 router
-  .post('/api/v1/auth/login', controller.login)
-  .post('/api/v1/auth/logout', controller.logout);
+  .post('/api/v1/login', controller.login)
+  .post('/api/v1/logout', controller.logout);
 
 module.exports = router;

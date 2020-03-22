@@ -22,20 +22,14 @@ const secured = async (ctx, next) => {
     {session: false},
     async (error, token) => {
       if (error || !token) {
-        ctx.body = {
-          authenticated: false,
-          message: 'Authentication failed.',
-        };
+        ctx.body = {message: 'Authentication failed.'};
 
         ctx.status = 401;
 
         return;
       }
 
-      ctx.body = {
-        authenticated: true,
-        token: token,
-      };
+      ctx.body = {token: token};
 
       ctx.status = 200;
 
@@ -45,8 +39,8 @@ const secured = async (ctx, next) => {
 };
 
 router
-  .get('/api/v1/users/:id', secured, controller.getUser)
+  .get('/api/v1/profile/:id', secured, controller.getUser)
 
-  .post('/api/v1/users', controller.registerUser);
+  .post('/api/v1/register', controller.registerUser);
 
 module.exports = router;

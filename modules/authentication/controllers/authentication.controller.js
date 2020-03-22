@@ -57,10 +57,7 @@ module.exports = {
       {session: false},
       async (error, user) => {
         if (error || !user) {
-          ctx.body = {
-            authenticated: false,
-            message: 'Authentication failed.',
-          };
+          ctx.body = {message: 'Authentication failed.'};
 
           ctx.status = 401;
 
@@ -80,7 +77,6 @@ module.exports = {
         );
 
         ctx.body = {
-          authenticated: true,
           message: 'Succesfully logged in.',
           token: token,
         };
@@ -96,9 +92,6 @@ module.exports = {
    * @param {object} ctx
    */
   logout: async (ctx) => {
-    ctx.body = {
-      authenticated: false,
-      message: 'Succesfully logged out.',
-    };
+    ctx.body = {message: 'Succesfully logged out.'};
   },
 };
