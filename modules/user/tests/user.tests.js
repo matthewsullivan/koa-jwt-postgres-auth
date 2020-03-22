@@ -1,8 +1,7 @@
-const {test} = require('ava');
+import {test} from 'ava';
+import {resolve} from 'path';
 
-const path = require('path');
-
-const server = require(path.resolve('./server.js'));
+const server = require(resolve('./server.js'));
 
 const request = require('supertest').agent(server.listen());
 
@@ -50,7 +49,7 @@ test.serial('Registration should not allow duplicate username', async (t) => {
   t.is(res.status, 400);
 });
 
-test.serial('Should register user', async (t) => {
+test.serial('Should register valid user', async (t) => {
   const res = await request.post('/api/v1/register/').send({
     email: user.email,
     firstName: user.firstName,
@@ -62,7 +61,13 @@ test.serial('Should register user', async (t) => {
   t.is(res.status, 201);
 });
 
-test.serial('Should login and generate valid json web token', async (t) => {
+test.serial('Should block secured route', async (t) => {
+  const result = await request.get(`/api/v1/profile/${1}`);
+
+  t.is(result.status, 401);
+});
+
+test.serial('Should login and allow access to secured route', async (t) => {
   const loginResult = await request.post('/api/v1/login').send({
     password: user.password,
     username: user.username,
