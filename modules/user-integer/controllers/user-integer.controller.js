@@ -26,7 +26,10 @@ module.exports = {
 
     const result = await service.getCurrent(token.id, current);
 
-    ctx.body = result.rows[0];
+    ctx.body = {
+      current: result.rows[0].integer,
+    };
+
     ctx.status = 200;
   },
 
@@ -40,7 +43,10 @@ module.exports = {
 
     const result = await service.getNext(token.id);
 
-    ctx.body = result.rows[0];
+    ctx.body = {
+      next: result.rows[0].integer,
+    };
+
     ctx.status = 200;
   },
 };
