@@ -4,7 +4,7 @@ CREATE TABLE public.user
 ( 
   id serial PRIMARY KEY,
   
-  email varchar(256) NOT NULL,
+  email varchar(256) NOT NULL UNIQUE,
   first_name varchar(256) NOT NULL,
   last_name varchar(256) NOT NULL,
   password varchar(256) NOT NULL,

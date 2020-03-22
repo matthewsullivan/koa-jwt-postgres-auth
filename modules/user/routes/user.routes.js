@@ -28,7 +28,6 @@ const secured = async (ctx, next) => {
         return;
       }
 
-      ctx.body = {token: token};
       ctx.status = 200;
 
       return next();
