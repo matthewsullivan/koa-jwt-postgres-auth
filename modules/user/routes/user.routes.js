@@ -23,14 +23,12 @@ const secured = async (ctx, next) => {
     async (error, token) => {
       if (error || !token) {
         ctx.body = {message: 'Authentication failed.'};
-
         ctx.status = 401;
 
         return;
       }
 
       ctx.body = {token: token};
-
       ctx.status = 200;
 
       return next();

@@ -23,17 +23,15 @@ const testPasswordStrength = async (ctx) => {
 /**
  * Encrypt password
  * @async
- * @param {object} user
+ * @param {string} password
  * @return {object}
  */
-const encryptPassword = async (user) => {
+const encryptPassword = async (password) => {
   const salt = await argon2.generateSalt();
 
-  const hashed = await argon2.hash(user.password, salt);
+  const encrypted = await argon2.hash(password, salt);
 
-  user.password = hashed;
-
-  return user;
+  return encrypted;
 };
 
 module.exports = {
@@ -47,9 +45,8 @@ module.exports = {
     const result = await service.getUserById(params.id);
     const user = result.rows[0];
 
-    ctx.status = 200;
-
     ctx.body = user ? user : {message: 'No user found.'};
+    ctx.status = 200;
   },
 
   /**
@@ -73,13 +70,16 @@ module.exports = {
 
     const user = ctx.request.body;
 
-    const password = await encryptPassword(user);
-    const result = await service.registerUser(password);
+    user.password = await encryptPassword(user.password);
 
-    if (result.rowCount) {
+    try {
+      await service.registerUser(user);
+
       ctx.body = {message: 'Succesfully registered.'};
-
       ctx.status = 201;
+    } catch {
+      ctx.body = {message: 'User exists.'};
+      ctx.status = 400;
     }
   },
 };

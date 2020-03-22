@@ -5,8 +5,6 @@ const controller = require(path.resolve(
   './modules/authentication/controllers/authentication.controller.js'
 ));
 
-router
-  .post('/api/v1/login', controller.login)
-  .post('/api/v1/logout', controller.logout);
+router.post('/api/v1/login', controller.login);
 
 module.exports = router;

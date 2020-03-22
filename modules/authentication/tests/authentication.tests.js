@@ -5,22 +5,16 @@ const server = require(path.resolve('./server.js'));
 
 const request = require('supertest').agent(server.listen());
 
-const admin = {
+const user = {
   password: '!1A2b3C4d!',
-  username: 'admin',
+  username: 'johndoe',
 };
 
-test.serial('Should login successfully', async (t) => {
+test.serial('Should login seed user', async (t) => {
   const res = await request.post('/api/v1/login').send({
-    password: admin.password,
-    username: admin.username,
+    password: user.password,
+    username: user.username,
   });
 
   t.is(res.status, 200);
-});
-
-test.serial('Should logout successfully', async (t) => {
-  const res = await request.post('/api/v1/logout');
-
-  t.is(res.status, 204);
 });

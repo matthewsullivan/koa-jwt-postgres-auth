@@ -19,13 +19,12 @@ const seed = (() => {
     };
 
     const user = {
-      email: 'admin@localhost.com',
+      email: 'johndoe@localhost.com',
       firstName: 'John',
       lastName: 'Doe',
       password: '!1A2b3C4d!',
-      username: 'admin',
+      username: 'johndoe',
     };
-
 
     ctx.request.body = user;
 

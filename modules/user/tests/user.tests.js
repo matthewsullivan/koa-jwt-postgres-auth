@@ -6,162 +6,73 @@ const server = require(path.resolve('./server.js'));
 
 const request = require('supertest').agent(server.listen());
 
-const admin = {
-  id: 1,
-  email: 'admin@localhost.com',
-  password: '!1A2b3C4d!',
-  username: 'admin',
-};
-
 const user = {
-  id: 2,
-  email: 'user@localhost.com',
-  firstName: 'Gamma',
-  lastName: 'Delta',
-  username: 'user',
-};
-
-const dummy = {
-  id: 3,
-  email: 'dummy@localhost.com',
-  firstName: 'Epsilon',
-  lastName: 'Zeta',
+  email: 'janedoe@localhost.com',
+  firstName: 'Jane',
+  lastName: 'Doe',
   password: '!1A2b3C4d!',
-  username: 'dummy',
+  username: 'janedoe',
 };
 
-test.serial('Login admin', async (t) => {
-  const res = await request.post('/api/v1/login').send({
-    password: admin.password,
-    username: admin.username,
+test.serial('Registration should not allow weak password', async (t) => {
+  const res = await request.post('/api/v1/register/').send({
+    email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    password: 'abcdefg',
+    username: user.username,
   });
 
-  t.is(res.status, 200);
+  t.is(res.status, 400);
 });
 
-test.serial('Get by id', async (t) => {
-  let res = await request.get(
-    '/api/v1/users?limit=5&offset=0&column=created&direction=desc&search={}'
-  );
+test.serial('Registration should not allow duplicate email', async (t) => {
+  const res = await request.post('/api/v1/register/').send({
+    email: 'johndoe@localhost.com',
+    firstName: user.firstName,
+    lastName: user.lastName,
+    password: user.password,
+    username: user.username,
+  });
 
-  const userId = res.body.rows[0].id;
-
-  res = await request.get(`/api/v1/users/${userId}`);
-
-  t.is(res.status, 200);
+  t.is(res.status, 400);
 });
 
-test.serial('Get all', async (t) => {
-  const res = await request.get(
-    '/api/v1/users?limit=5&offset=0&column=created&direction=desc&search={}'
-  );
+test.serial('Registration should not allow duplicate username', async (t) => {
+  const res = await request.post('/api/v1/register/').send({
+    email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    password: user.password,
+    username: 'johndoe',
+  });
 
-  t.is(res.status, 200);
-  t.is(res.body.totalCount, 2);
+  t.is(res.status, 400);
 });
 
-test.serial('Create', async (t) => {
-  const res = await request.post('/api/v1/users/').send({
-    email: dummy.email,
-    firstName: dummy.firstName,
-    lastName: dummy.lastName,
-    password: dummy.password,
-    roles: dummy.roles,
-    username: dummy.username,
+test.serial('Should register user', async (t) => {
+  const res = await request.post('/api/v1/register/').send({
+    email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    password: user.password,
+    username: user.username,
   });
 
   t.is(res.status, 201);
 });
 
-test.serial('Create should not allow weak password', async (t) => {
-  const password = '1234567890';
-
-  const res = await request.post('/api/v1/users/').send({
-    email: dummy.email,
-    firstName: dummy.firstName,
-    lastName: dummy.lastName,
-    password: password,
-    roles: dummy.roles,
-    username: dummy.username,
-  });
-
-  t.is(res.status, 422);
-});
-
-test.serial('Create should not allow duplicate email', async (t) => {
-  const res = await request.post('/api/v1/users/').send({
-    email: user.email.toUpperCase(),
-    firstName: dummy.firstName,
-    lastName: dummy.lastName,
-    password: dummy.password,
-    roles: dummy.roles,
-    username: dummy.username,
-  });
-
-  t.is(res.status, 500);
-});
-
-test.serial('Create should not allow duplicate username', async (t) => {
-  const res = await request.post('/api/v1/users/').send({
-    email: dummy.email,
-    firstName: dummy.firstName,
-    lastName: dummy.lastName,
-    password: dummy.password,
-    roles: dummy.roles,
+test.serial('Should login and generate valid json web token', async (t) => {
+  const loginResult = await request.post('/api/v1/login').send({
+    password: user.password,
     username: user.username,
   });
 
-  t.is(res.status, 500);
-});
+  const profileResult = await request
+    .get(`/api/v1/profile/${1}`)
+    .set('Authorization', `Bearer ${loginResult.body.token}`);
 
-test.serial('Check user by email', async (t) => {
-  const res = await request.get(`/api/v1/users/email/${admin.email}`);
-
-  t.is(res.status, 200);
-  t.is(res.body.email, admin.email);
-});
-
-test.serial('Check user by username', async (t) => {
-  const res = await request.get(`/api/v1/users/username/${admin.username}`);
-
-  t.is(res.status, 200);
-  t.is(res.body.username, admin.username);
-});
-
-test.serial('Login user', async (t) => {
-  const res = await request.post('/api/v1/login').send({
-    password: dummy.password,
-    username: dummy.username,
-  });
-
-  t.is(res.status, 200);
-});
-
-test.serial('Get by id should not allow unauthorized access', async (t) => {
-  const res = await request.get(`/api/v1/users/${admin.id}`);
-
-  t.is(res.status, 401);
-});
-
-
-test.serial('Login admin', async (t) => {
-  const res = await request.post('/api/v1/login').send({
-    password: admin.password,
-    username: admin.username,
-  });
-
-  t.is(res.status, 200);
-});
-
-
-test.serial('Logout user', async (t) => {
-  const res = await request.post('/api/v1/logout');
-
-  t.is(res.status, 204);
-});
-
-test.serial('Get by id should not allow unauthenticated access', async (t) => {
-  const res = await request.get(`/api/v1/users/${admin.id}`);
-
-  t.is(res.status, 401);
+  t.is(loginResult.status, 200);
+  t.is(profileResult.status, 200);
+  t.is(profileResult.body.email, 'johndoe@localhost.com');
 });
