@@ -117,7 +117,7 @@ module.exports = {
       };
 
       ctx.status = 201;
-    } catch {
+    } catch (e) {
       ctx.status = 400;
 
       ctx.body = {
