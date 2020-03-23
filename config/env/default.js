@@ -7,24 +7,25 @@ if (process.env.DATABASE_URL) {
 
   const params = url.parse(process.env.DATABASE_URL);
 
-  const auth = params ? params.auth.split(':') : '';
+  const auth = params.auth.split(':');
 
   db = {
-    database: params.pathname.split('/')[1] || 'simple_api',
-    dialect: process.env.DB_DIALECT || 'postgres',
-    host: params.hostname || 'localhost',
-    password: auth[1] || '',
-    port: params.port || 5432,
-    user: auth[0] || '',
+    database: params.pathname.split('/')[1],
+    dialect: process.env.DB_DIALECT,
+    host: params.hostname,
+    password: auth[1],
+    port: params.port,
+    user: auth[0],
   };
 } else {
   db = {
-    database: process.env.DB_DATABASE || 'simple_api',
-    dialect: process.env.DB_DIALECT || 'postgres',
-    host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 5432,
+    database: 'simple_api',
+    dialect: 'postgres',
+    host: 'localhost',
+    port: 5432,
   };
 }
+
 const config = {
   db,
   secret: process.env.JWT_SECRET || 'jwt-secret',
