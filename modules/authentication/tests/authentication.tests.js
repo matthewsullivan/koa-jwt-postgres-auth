@@ -11,10 +11,10 @@ const user = {
 };
 
 test.serial('Should login seed user', async (t) => {
-  const res = await request.post('/api/v1/login').send({
+  const response = await request.post('/api/v1/login').send({
     email: user.email,
     password: user.password,
   });
 
-  t.is(res.status, 200);
+  t.is(response.status, 200);
 });
