@@ -2,6 +2,7 @@ const process = require('process');
 
 const config = {
   db: {
+    connection: process.env.DATABASE_URL,
     database: process.env.DB_DATABASE || 'simple_api',
     dialect: process.env.DB_DIALECT || 'postgres',
     host: process.env.DB_HOST || 'localhost',
