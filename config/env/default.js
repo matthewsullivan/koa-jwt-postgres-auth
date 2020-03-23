@@ -9,7 +9,7 @@ const config = {
   },
   secret: process.env.JWT_SECRET || 'jwt-secret',
   server: {
-    port: process.env.SERVER_PORT || 3000,
+    port: process.env.PORT || 3000,
   },
 };
 
