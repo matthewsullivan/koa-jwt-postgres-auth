@@ -3,10 +3,10 @@ const path = require('path');
 const router = require('koa-router')();
 
 const controller = require(path.resolve(
-  './modules/user/controllers/user.controller.js'
+  './modules/user-integer/controllers/user-integer.controller.js'
 ));
 
-require(path.resolve('./modules/user/strategies/jwt.js'));
+require(path.resolve('./modules/user-integer/strategies/jwt.js'));
 
 /**
  * Secured
@@ -37,6 +37,7 @@ const secured = async (ctx, next) => {
         return;
       }
 
+      ctx.token = token;
       ctx.status = 200;
 
       return next();
@@ -45,8 +46,8 @@ const secured = async (ctx, next) => {
 };
 
 router
-  .get('/api/v1/profile/:id', secured, controller.getUser)
+  .get('/api/v1/next', secured, controller.getNext)
 
-  .post('/api/v1/register', controller.registerUser);
+  .put('/api/v1/current', secured, controller.getCurrent);
 
 module.exports = router;

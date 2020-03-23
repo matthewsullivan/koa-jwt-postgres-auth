@@ -51,8 +51,7 @@
     "url": "git+https://github.com/matthewsullivan/simple-api.git"
   },
   "scripts": {
-    "db-indexes": "find modules/*/models/indexes -name *.sql -exec psql -d $npm_package_config_db_database -U postgres -h localhost -f {} \\;",
-    "db-init": "npm init -f && npm run -s db-tables && npm run -s db-indexes && npm run -s db-seed",
+    "db-init": "npm init -f && npm run -s db-tables && npm run -s db-seed",
     "db-tables": "find modules/*/models/tables -name *.sql -exec psql -d $npm_package_config_db_database -U postgres -h localhost -f {} \\;",
     "db-seed": "node ./config/lib/seed.js",
     "debug": "NODE_ENV=development && nodemon --inspect server.js",
