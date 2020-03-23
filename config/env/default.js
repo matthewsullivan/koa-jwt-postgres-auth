@@ -19,7 +19,7 @@ if (process.env.DATABASE_URL) {
   };
 } else {
   db = {
-    database: 'simple_test',
+    database: 'simple_api',
     dialect: 'postgres',
     host: 'localhost',
     port: 5432,

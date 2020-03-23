@@ -8,7 +8,7 @@ Install dependencies
 
 Install Postgres
 
-        https://postgresapp.com/
+    https://postgresapp.com/
 
 Create database
 
