@@ -6,6 +6,7 @@ const config = {
     dialect: process.env.DB_DIALECT || 'postgres',
     host: process.env.DB_HOST || 'localhost',
     port: process.env.DB_PORT || 5432,
+    url: process.env.DATABASE_URL || '',
   },
   secret: process.env.JWT_SECRET || 'jwt-secret',
   server: {

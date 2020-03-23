@@ -24,4 +24,12 @@ https://thinkific-etl-test.herokuapp.com
 
 db postgresql-angular-51177 as DATABASE_URL
 
-    $ git clone https://git.heroku.com/thinkific-etl-test.git
+    $ git push heroku develop:master
+
+## cURLS
+Register
+
+    $ curl -d 'email=johndoe@localhost.com&firstName=John&lastName=Doe&password=(a1B2c3D4e5F6g)' http://thinkific-etl-test.herokuapp.com/api/v1/register
+
+Login
+    $ curl -d 'email=johndoe@localhost.com&password=(a1B2c3D4e5F6g)' http://thinkific-etl-test.herokuapp.com/api/v1/login/
