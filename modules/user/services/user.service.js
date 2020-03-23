@@ -38,18 +38,4 @@ module.exports = {
 
     return pool.query(statement);
   },
-
-  /**
-   * Set user integer
-   * @param {object} userId
-   * @return {object}
-   */
-  setUserInteger: (userId) => {
-    const statement = sql`
-      INSERT INTO public.user_integer (user_id, integer)
-      VALUES (${userId}, 1)
-    `;
-
-    return pool.query(statement);
-  },
 };

@@ -11,10 +11,29 @@ module.exports = {
    * @param {object} ctx
    */
   getCurrent: async (ctx) => {
-    const current = ctx.request.body.current;
-    const token = ctx.token;
+    const response = await service.getCurrent(ctx.token.id);
 
-    if (current < 0) {
+    ctx.body = {
+      data: {
+        attributes: {
+          current: response.rows.length ? response.rows[0].integer : 0,
+        },
+        type: 'integer',
+      },
+    };
+
+    ctx.status = 200;
+  },
+
+  /**
+   * Upsert current
+   * @async
+   * @param {object} ctx
+   */
+  upsertCurrent: async (ctx) => {
+    const current = ctx.request.body.current;
+
+    if (!current || current == 0) {
       ctx.status = 400;
 
       ctx.body = {
@@ -30,12 +49,12 @@ module.exports = {
       return;
     }
 
-    const result = await service.getCurrent(token.id, current);
+    const response = await service.upsertCurrent(ctx.token.id, current);
 
     ctx.body = {
       data: {
         attributes: {
-          current: result.rows[0].integer,
+          current: response.rows[0].integer,
         },
         type: 'integer',
       },
@@ -45,19 +64,17 @@ module.exports = {
   },
 
   /**
-   * Get Next
+   * Upsert next
    * @async
    * @param {object} ctx
    */
-  getNext: async (ctx) => {
-    const token = ctx.token;
-
-    const result = await service.getNext(token.id);
+  upsertNext: async (ctx) => {
+    const response = await service.upsertNext(ctx.token.id);
 
     ctx.body = {
       data: {
         attributes: {
-          next: result.rows[0].integer,
+          next: response.rows[0].integer,
         },
         type: 'integer',
       },

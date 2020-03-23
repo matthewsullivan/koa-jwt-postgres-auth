@@ -41,8 +41,8 @@ module.exports = {
    */
   getUser: async (ctx) => {
     const params = ctx.params;
-    const result = await service.getUserById(params.id);
-    const user = result.rows[0];
+    const response = await service.getUserById(params.id);
+    const user = response.rows[0];
 
     if (!user) {
       ctx.status = 400;
@@ -101,10 +101,8 @@ module.exports = {
     data.password = await encryptPassword(data.password);
 
     try {
-      const result = await service.registerUser(data);
-      const user = result.rows[0];
-
-      await service.setUserInteger(user.id);
+      const response = await service.registerUser(data);
+      const user = response.rows[0];
 
       ctx.body = {
         data: {
@@ -117,8 +115,7 @@ module.exports = {
       };
 
       ctx.status = 201;
-    } catch (e) {
-      console.log(e);
+    } catch {
       ctx.status = 400;
 
       ctx.body = {

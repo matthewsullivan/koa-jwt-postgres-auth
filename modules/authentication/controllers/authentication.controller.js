@@ -17,8 +17,8 @@ require(path.resolve('./modules/authentication/strategies/local.js'));
  * @return {object}
  */
 const getUserById = async (userId) => {
-  const result = await service.getUserById(userId);
-  const user = result.rows[0];
+  const response = await service.getUserById(userId);
+  const user = response.rows[0];
 
   return user;
 };

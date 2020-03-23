@@ -5,7 +5,7 @@
   },
   "config": {
     "db": {
-      "database": "simple_api"
+      "database": "simple_test_api"
     }
   },
   "description": "simple-api",

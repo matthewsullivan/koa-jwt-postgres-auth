@@ -46,8 +46,9 @@ const secured = async (ctx, next) => {
 };
 
 router
-  .get('/api/v1/next', secured, controller.getNext)
+  .get('/api/v1/current', secured, controller.getCurrent)
+  .get('/api/v1/next', secured, controller.upsertNext)
 
-  .put('/api/v1/current', secured, controller.getCurrent);
+  .put('/api/v1/current', secured, controller.upsertCurrent);
 
 module.exports = router;
