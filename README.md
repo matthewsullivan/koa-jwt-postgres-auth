@@ -25,8 +25,20 @@ Set environment and build database
 ## cURLS
 Register
 
-    $ curl -d 'email=johndoe@localhost.com&firstName=John&lastName=Doe&password=(a1B2c3D4e5F6g)' http://thinkific-etl-test.herokuapp.com/api/v1/register
+    $ curl http://thinkific-etl-test.herokuapp.com/api/v1/register -d 'email=johndoe@localhost.com&firstName=John&lastName=Doe&password=(a1B2c3D4e5F6g)' 
 
 Login
 
-    $ curl -d 'email=johndoe@localhost.com&password=(a1B2c3D4e5F6g)' http://thinkific-etl-test.herokuapp.com/api/v1/login/
+    $ curl http://thinkific-etl-test.herokuapp.com/api/v1/login -d 'email=johndoe@localhost.com&password=(a1B2c3D4e5F6g)'
+
+Current
+
+    $ curl -X 'PUT' http://thinkific-etl-test.herokuapp.com/api/v1/current -H 'Authorization: Bearer [access_token]'
+
+Set Current
+
+    $ curl -X 'PUT' http://thinkific-etl-test.herokuapp.com/api/v1/current -H 'Authorization: Bearer [access_token]' -d 'current=1000'
+
+Next
+
+    $ curl http://thinkific-etl-test.herokuapp.com/api/v1/next -H 'Authorization: Bearer [access_token]'
