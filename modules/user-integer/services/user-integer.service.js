@@ -19,7 +19,7 @@ module.exports = {
           updated = now()
         WHERE user_id = ${userId}
         RETURNING id, user_id, integer, created, updated;
-    `;
+      `;
 
       return pool.query(statement);
     }

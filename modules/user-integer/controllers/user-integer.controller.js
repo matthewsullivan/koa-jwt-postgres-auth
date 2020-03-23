@@ -15,11 +15,17 @@ module.exports = {
     const token = ctx.token;
 
     if (current < 0) {
-      ctx.body = {
-        message: 'Current must be greator than 0',
-      };
-
       ctx.status = 400;
+
+      ctx.body = {
+        errors: [
+          {
+            detail: 'Value must be greater than 0.',
+            status: ctx.status,
+            title: 'Unaccepted Type.',
+          },
+        ],
+      };
 
       return;
     }
@@ -27,7 +33,12 @@ module.exports = {
     const result = await service.getCurrent(token.id, current);
 
     ctx.body = {
-      current: result.rows[0].integer,
+      data: {
+        attributes: {
+          current: result.rows[0].integer,
+        },
+        type: 'integer',
+      },
     };
 
     ctx.status = 200;
@@ -44,7 +55,12 @@ module.exports = {
     const result = await service.getNext(token.id);
 
     ctx.body = {
-      next: result.rows[0].integer,
+      data: {
+        attributes: {
+          next: result.rows[0].integer,
+        },
+        type: 'integer',
+      },
     };
 
     ctx.status = 200;

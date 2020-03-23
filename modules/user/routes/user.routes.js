@@ -22,8 +22,17 @@ const secured = async (ctx, next) => {
     {session: false},
     async (error, token) => {
       if (error || !token) {
-        ctx.body = {message: 'Authentication failed.'};
         ctx.status = 401;
+
+        ctx.body = {
+          errors: [
+            {
+              detail: 'Must be logged in to access requested resource.',
+              status: ctx.status,
+              title: 'Authentication Failed.',
+            },
+          ],
+        };
 
         return;
       }

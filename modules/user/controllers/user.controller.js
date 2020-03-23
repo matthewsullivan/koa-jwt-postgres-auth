@@ -8,11 +8,10 @@ const service = require(path.resolve(
 
 /**
  * Test password strength
- * @async
  * @param {object} ctx
  * @return {array}
  */
-const testPasswordStrength = async (ctx) => {
+const testPasswordStrength = (ctx) => {
   const user = ctx.request.body;
 
   const owaspTest = owasp.test(user.password);
@@ -45,7 +44,31 @@ module.exports = {
     const result = await service.getUserById(params.id);
     const user = result.rows[0];
 
-    ctx.body = user ? user : {message: 'No user found.'};
+    if (!user) {
+      ctx.status = 400;
+
+      ctx.body = {
+        errors: [
+          {
+            status: ctx.status,
+            title: 'No User Found.',
+          },
+        ],
+      };
+
+      return;
+    }
+
+    ctx.body = {
+      data: {
+        attributes: {
+          user: user,
+        },
+        id: 2,
+        type: 'user',
+      },
+    };
+
     ctx.status = 200;
   },
 
@@ -55,34 +78,57 @@ module.exports = {
    * @param {object} ctx
    */
   registerUser: async (ctx) => {
-    const errors = await testPasswordStrength(ctx);
+    const errors = testPasswordStrength(ctx);
 
     if (!!errors.length) {
-      ctx.body = {
-        message: 'Password not strong enough.',
-        rules: errors,
-      };
-
       ctx.status = 400;
+
+      ctx.body = {
+        errors: [
+          {
+            detail: errors,
+            status: ctx.status,
+            title: 'Password Strength.',
+          },
+        ],
+      };
 
       return;
     }
 
-    const user = ctx.request.body;
+    const data = ctx.request.body;
 
-    user.password = await encryptPassword(user.password);
+    data.password = await encryptPassword(data.password);
 
     try {
-      const result = await service.registerUser(user);
-      const userId = result.rows[0].id;
+      const result = await service.registerUser(data);
+      const user = result.rows[0];
 
-      await service.setUserInteger(userId);
+      await service.setUserInteger(user.id);
 
-      ctx.body = {message: 'Succesfully registered.'};
+      ctx.body = {
+        data: {
+          attributes: {
+            user: user,
+          },
+          title: 'Succesfully Registered.',
+          type: 'user',
+        },
+      };
+
       ctx.status = 201;
     } catch {
-      ctx.body = {message: 'User exists.'};
       ctx.status = 400;
+
+      ctx.body = {
+        errors: [
+          {
+            detail: 'A user with the same email exists.',
+            status: ctx.status,
+            title: 'User exists.',
+          },
+        ],
+      };
     }
   },
 };

@@ -57,11 +57,15 @@ test.serial('Should login and allow access to secured route', async (t) => {
     password: user.password,
   });
 
+  const token = loginResult.body.data.attributes.access_token;
+
   const profileResult = await request
     .get(`/api/v1/profile/${1}`)
-    .set('Authorization', `Bearer ${loginResult.body.token}`);
+    .set('Authorization', `Bearer ${token}`);
+
+  const email = profileResult.body.data.attributes.user.email;
 
   t.is(loginResult.status, 200);
   t.is(profileResult.status, 200);
-  t.is(profileResult.body.email, 'johndoe@localhost.com');
+  t.is(email, 'johndoe@localhost.com');
 });

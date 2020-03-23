@@ -57,11 +57,22 @@ module.exports = {
       {session: false},
       async (error, user) => {
         if (error || !user) {
-          ctx.body = {message: 'Authentication failed.'};
           ctx.status = 401;
+
+          ctx.body = {
+            errors: [
+              {
+                detail: 'Invalid credentails supplied.',
+                status: ctx.status,
+                title: 'Authentication Failed.',
+              },
+            ],
+          };
 
           return;
         }
+
+        const expiration = '1h';
 
         const token = jwt.sign(
           {
@@ -70,13 +81,21 @@ module.exports = {
           },
           config.secret,
           {
-            expiresIn: '1h',
+            expiresIn: expiration,
           }
         );
 
         ctx.body = {
-          message: 'Succesfully logged in.',
-          token: token,
+          data: {
+            attributes: {
+              access_token: token,
+              token_type: 'Bearer',
+              expires_in: expiration,
+            },
+            detail: 'Logged in and generated bearer token.',
+            title: 'Succesful Login.',
+            type: 'token',
+          },
         };
 
         ctx.status = 200;
