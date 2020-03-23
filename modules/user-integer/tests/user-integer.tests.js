@@ -29,11 +29,11 @@ test.serial('Should login and allow access to secured routes', async (t) => {
   const token = loginResponse.body.data.attributes.access_token;
 
   const currentResponse = await request
-    .put(`/api/v1/current/`)
+    .get('/api/v1/current/')
     .set('Authorization', `Bearer ${token}`);
 
   const nextResponse = await request
-    .get(`/api/v1/next/`)
+    .get('/api/v1/next/')
     .set('Authorization', `Bearer ${token}`);
 
   t.is(loginResponse.status, 200);
@@ -50,13 +50,13 @@ test.serial("Should increment user's integer", async (t) => {
   const token = loginResponse.body.data.attributes.access_token;
 
   const currentResponse = await request
-    .put(`/api/v1/current/`)
+    .get('/api/v1/current/')
     .set('Authorization', `Bearer ${token}`);
 
   const currentIndex = currentResponse.body.data.attributes.current;
 
   const nextResponse = await request
-    .get(`/api/v1/next/`)
+    .get('/api/v1/next/')
     .set('Authorization', `Bearer ${token}`);
 
   const nextIndex = nextResponse.body.data.attributes.next;
@@ -65,7 +65,7 @@ test.serial("Should increment user's integer", async (t) => {
   t.truthy(nextIndex === currentIndex + 1);
 });
 
-test.serial('Should PUT user defined current integer', async (t) => {
+test.serial('Should PUT user defined integer', async (t) => {
   const loginResponse = await request.post('/api/v1/login').send({
     email: user.email,
     password: user.password,
@@ -74,7 +74,7 @@ test.serial('Should PUT user defined current integer', async (t) => {
   const token = loginResponse.body.data.attributes.access_token;
 
   const currentResponse = await request
-    .put(`/api/v1/current/`)
+    .put('/api/v1/current/')
     .send({current: 100})
     .set('Authorization', `Bearer ${token}`);
 
@@ -84,7 +84,7 @@ test.serial('Should PUT user defined current integer', async (t) => {
   t.truthy(responseIndex === 100);
 });
 
-test.serial('Should not PUT negative integer', async (t) => {
+test.serial('Should not PUT invalid integer', async (t) => {
   const loginResponse = await request.post('/api/v1/login').send({
     email: user.email,
     password: user.password,
@@ -93,7 +93,7 @@ test.serial('Should not PUT negative integer', async (t) => {
   const token = loginResponse.body.data.attributes.access_token;
 
   const currentResponse = await request
-    .put(`/api/v1/current/`)
+    .put('/api/v1/current/')
     .send({current: -100})
     .set('Authorization', `Bearer ${token}`);
 

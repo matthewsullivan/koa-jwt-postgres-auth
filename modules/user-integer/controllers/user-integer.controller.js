@@ -33,7 +33,7 @@ module.exports = {
   upsertCurrent: async (ctx) => {
     const current = ctx.request.body.current;
 
-    if (!current || current == 0) {
+    if (!current || current <= 0) {
       ctx.status = 400;
 
       ctx.body = {
