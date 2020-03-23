@@ -6,17 +6,13 @@ Install dependencies
 
 ## Database
 
-Enter psql
+Install Postgres
 
-    $ psql postgres
+        https://postgresapp.com/ (simplest way)
 
 Create database
 
-    $ CREATE DATABASE simple_api;
-
-Exist psql
-
-    $ \q
+    $ createdb simple_api
 
 ## Setup
 

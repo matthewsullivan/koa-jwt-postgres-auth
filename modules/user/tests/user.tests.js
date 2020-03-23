@@ -46,7 +46,7 @@ test.serial('Should register valid user', async (t) => {
 });
 
 test.serial('Should block secured route', async (t) => {
-  const response = await request.get(`/api/v1/profile/${1}`);
+  const response = await request.get('/api/v1/profile/1');
 
   t.is(response.status, 401);
 });
@@ -60,7 +60,7 @@ test.serial('Should login and allow access to secured route', async (t) => {
   const token = loginResponse.body.data.attributes.access_token;
 
   const profileResponse = await request
-    .get(`/api/v1/profile/1`)
+    .get('/api/v1/profile/1')
     .set('Authorization', `Bearer ${token}`);
 
   const email = profileResponse.body.data.attributes.user.email;
