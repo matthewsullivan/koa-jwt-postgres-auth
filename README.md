@@ -8,7 +8,7 @@ Install dependencies
 
 Install Postgres
 
-        https://postgresapp.com/ (simplest way)
+        https://postgresapp.com/
 
 Create database
 
@@ -43,7 +43,7 @@ Login
 
 Current
 
-    $ curl -X 'PUT' http://thinkific-etl-test.herokuapp.com/api/v1/current -H 'Authorization: Bearer [access_token]'
+    $ curl http://thinkific-etl-test.herokuapp.com/api/v1/current -H 'Authorization: Bearer [access_token]'
 
 Set Current
 
