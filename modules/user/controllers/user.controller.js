@@ -1,23 +1,11 @@
 const argon2 = require('argon2');
 const owasp = require('owasp-password-strength-test');
 const path = require('path');
+const validator = require('email-validator');
 
 const service = require(path.resolve(
   './modules/user/services/user.service.js'
 ));
-
-/**
- * Test password strength
- * @param {object} ctx
- * @return {array}
- */
-const testPasswordStrength = (ctx) => {
-  const user = ctx.request.body;
-
-  const owaspTest = owasp.test(user.password);
-
-  return owaspTest.errors;
-};
 
 /**
  * Encrypt password
@@ -31,6 +19,32 @@ const encryptPassword = async (password) => {
   const encrypted = await argon2.hash(password, salt);
 
   return encrypted;
+};
+
+/**
+ * Test Email Validity
+ * @param {object} ctx
+ * @return {array}
+ */
+const testEmailValidity = (ctx) => {
+  const user = ctx.request.body;
+
+  const emailTest = validator.validate(user.email);
+
+  return emailTest;
+};
+
+/**
+ * Test password strength
+ * @param {object} ctx
+ * @return {array}
+ */
+const testPasswordStrength = (ctx) => {
+  const user = ctx.request.body;
+
+  const owaspTest = owasp.test(user.password);
+
+  return owaspTest.errors;
 };
 
 module.exports = {
@@ -73,20 +87,37 @@ module.exports = {
   },
 
   /**
-   * Register user
+   * Register User
    * @async
    * @param {object} ctx
    */
   registerUser: async (ctx) => {
-    const errors = testPasswordStrength(ctx);
+    const emailErrors = testEmailValidity(ctx);
+    const passwordErrors = testPasswordStrength(ctx);
 
-    if (!!errors.length) {
+    if (!emailErrors) {
       ctx.status = 400;
 
       ctx.body = {
         errors: [
           {
-            detail: errors,
+            detail: 'A valid email must be utlizes to register.',
+            status: ctx.status,
+            title: 'Invalid Email.',
+          },
+        ],
+      };
+
+      return;
+    }
+
+    if (!!passwordErrors.length) {
+      ctx.status = 400;
+
+      ctx.body = {
+        errors: [
+          {
+            detail: passwordErrors,
             status: ctx.status,
             title: 'Password Strength.',
           },
