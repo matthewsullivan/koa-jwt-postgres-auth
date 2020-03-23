@@ -1,71 +1,125 @@
-const {test} = require('ava');
-
+const argon2 = require('argon2');
+const owasp = require('owasp-password-strength-test');
 const path = require('path');
-const server = require(path.resolve('./server.js'));
+const validator = require('email-validator');
 
-const request = require('supertest').agent(server.listen());
+const service = require(path.resolve(
+  './modules/user/services/user.service.js'
+));
 
-const user = {
-  email: 'janedoe@localhost.com',
-  firstName: 'Jane',
-  lastName: 'Doe',
-  password: '(a1B2c3D4e5F6g)',
+/**
+ * Encrypt password
+ * @async
+ * @param {string} password
+ * @return {object}
+ */
+const encryptPassword = async (password) => {
+  const salt = await argon2.generateSalt();
+
+  const encrypted = await argon2.hash(password, salt);
+
+  return encrypted;
 };
 
-test.serial('Registration should not allow weak password', async (t) => {
-  const response = await request.post('/api/v1/register/').send({
-    email: user.email,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    password: 'abcdefg',
-  });
+/**
+ * Test email validity
+ * @param {object} ctx
+ * @return {array}
+ */
+const testEmailValidity = (ctx) => {
+  const user = ctx.request.body;
 
-  t.is(response.status, 400);
-});
+  const emailTest = validator.validate(user.email);
 
-test.serial('Registration should not allow duplicate email', async (t) => {
-  const response = await request.post('/api/v1/register/').send({
-    email: 'johndoe@localhost.com',
-    firstName: user.firstName,
-    lastName: user.lastName,
-    password: user.password,
-  });
+  return emailTest;
+};
 
-  t.is(response.status, 400);
-});
+/**
+ * Test password strength
+ * @param {object} ctx
+ * @return {array}
+ */
+const testPasswordStrength = (ctx) => {
+  const user = ctx.request.body;
 
-test.serial('Should register valid user', async (t) => {
-  const response = await request.post('/api/v1/register/').send({
-    email: user.email,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    password: user.password,
-  });
+  const owaspTest = owasp.test(user.password);
 
-  t.is(response.status, 201);
-});
+  return owaspTest.errors;
+};
 
-test.serial('Should block secured route', async (t) => {
-  const response = await request.get('/api/v1/profile/1');
+module.exports = {
+  /**
+   * Register user
+   * @async
+   * @param {object} ctx
+   */
+  registerUser: async (ctx) => {
+    const emailErrors = testEmailValidity(ctx);
+    const passwordErrors = testPasswordStrength(ctx);
 
-  t.is(response.status, 401);
-});
+    if (!emailErrors) {
+      ctx.status = 400;
 
-test.serial('Should login and allow access to secured route', async (t) => {
-  const loginResponse = await request.post('/api/v1/login').send({
-    email: user.email,
-    password: user.password,
-  });
+      ctx.body = {
+        errors: [
+          {
+            detail: 'A valid email must be utlizes to register.',
+            status: ctx.status,
+            title: 'Invalid Email.',
+          },
+        ],
+      };
 
-  const token = loginResponse.body.data.attributes.access_token;
+      return;
+    }
 
-  const profileResponse = await request
-    .get('/api/v1/profile/1')
-    .set('Authorization', `Bearer ${token}`);
+    if (!!passwordErrors.length) {
+      ctx.status = 400;
 
-  const email = profileResponse.body.data.attributes.user.email;
+      ctx.body = {
+        errors: [
+          {
+            detail: passwordErrors,
+            status: ctx.status,
+            title: 'Password Strength.',
+          },
+        ],
+      };
 
-  t.is(loginResponse.status, 200);
-  t.is(profileResponse.status, 200);
-  t.is(email, 'johndoe@localhost.com');
-});
+      return;
+    }
+
+    const data = ctx.request.body;
+
+    data.password = await encryptPassword(data.password);
+
+    try {
+      const response = await service.registerUser(data);
+      const user = response.rows[0];
+
+      ctx.body = {
+        data: {
+          attributes: {
+            user: user,
+          },
+          title: 'Succesfully Registered.',
+          type: 'user',
+        },
+      };
+
+      ctx.status = 201;
+    } catch {
+      ctx.status = 400;
+
+      ctx.body = {
+        errors: [
+          {
+            detail: 'A user with the same email exists.',
+            status: ctx.status,
+            title: 'User exists.',
+          },
+        ],
+      };
+    }
+  },
+};
