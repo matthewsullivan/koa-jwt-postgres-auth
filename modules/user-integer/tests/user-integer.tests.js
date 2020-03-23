@@ -53,13 +53,13 @@ test.serial("Should increment user's integer", async (t) => {
     .get('/api/v1/current/')
     .set('Authorization', `Bearer ${token}`);
 
-  const currentIndex = currentResponse.body.data.attributes.current;
+  const currentIndex = currentResponse.body.data.attributes.integer;
 
   const nextResponse = await request
     .get('/api/v1/next/')
     .set('Authorization', `Bearer ${token}`);
 
-  const nextIndex = nextResponse.body.data.attributes.next;
+  const nextIndex = nextResponse.body.data.attributes.integer;
 
   t.is(loginResponse.status, 200);
   t.truthy(nextIndex === currentIndex + 1);
@@ -78,7 +78,7 @@ test.serial('Should PUT user defined integer', async (t) => {
     .send({current: 100})
     .set('Authorization', `Bearer ${token}`);
 
-  const responseIndex = currentResponse.body.data.attributes.current;
+  const responseIndex = currentResponse.body.data.attributes.integer;
 
   t.is(loginResponse.status, 200);
   t.truthy(responseIndex === 100);

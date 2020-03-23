@@ -16,7 +16,7 @@ module.exports = {
     ctx.body = {
       data: {
         attributes: {
-          current: response.rows.length ? response.rows[0].integer : 0,
+          integer: response.rows.length ? response.rows[0].integer : 0,
         },
         type: 'integer',
       },
@@ -54,7 +54,7 @@ module.exports = {
     ctx.body = {
       data: {
         attributes: {
-          current: response.rows[0].integer,
+          integer: response.rows[0].integer,
         },
         type: 'integer',
       },
@@ -74,7 +74,7 @@ module.exports = {
     ctx.body = {
       data: {
         attributes: {
-          next: response.rows[0].integer,
+          integer: response.rows[0].integer,
         },
         type: 'integer',
       },
