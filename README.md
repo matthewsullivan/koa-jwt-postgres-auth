@@ -4,6 +4,20 @@ Install dependencies
 
     $ npm install
 
+## Database
+
+Enter psql
+
+    $ psql postgres
+
+Create database
+
+    $ CREATE DATABASE simple_api;
+
+Exist psql
+
+    $ \q
+
 ## Setup
 
 Set environment and build database
