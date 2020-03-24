@@ -13,10 +13,12 @@ const user = {
 };
 
 test.serial('Should block secured routes', async (t) => {
-  const currentResponse = await request.put(`/api/v1/current`);
+  const currentResponseA = await request.put(`/api/v1/current`);
+  const currentResponseB = await request.get(`/api/v1/current`);
   const nextResponse = await request.get(`/api/v1/next`);
 
-  t.is(currentResponse.status, 401);
+  t.is(currentResponseA.status, 401);
+  t.is(currentResponseB.status, 401);
   t.is(nextResponse.status, 401);
 });
 

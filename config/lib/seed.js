@@ -1,6 +1,6 @@
 const path = require('path');
 
-const userController = require(path.resolve(
+const controller = require(path.resolve(
   './modules/user/controllers/user.controller.js'
 ));
 
@@ -27,7 +27,7 @@ const seed = (() => {
 
     ctx.request.body = user;
 
-    await userController.registerUser(ctx);
+    await controller.registerUser(ctx);
   };
 
   /**
