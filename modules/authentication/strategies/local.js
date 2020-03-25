@@ -9,7 +9,7 @@ const service = require(path.resolve(
 ));
 
 /**
- * Get user by id
+ * Get User By Id
  * @async
  * @param {number} userId
  * @return {object}

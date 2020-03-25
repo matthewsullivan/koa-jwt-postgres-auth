@@ -5,7 +5,7 @@ const {sql} = require('pg-extra');
 
 module.exports = {
   /**
-   * Get current
+   * Get Current
    * @param {number} userId
    * @return {object}
    */
@@ -20,7 +20,7 @@ module.exports = {
   },
 
   /**
-   * Upsert current
+   * Upsert Current
    * @param {number} userId
    * @param {number} current
    * @return {object}
@@ -40,7 +40,7 @@ module.exports = {
   },
 
   /**
-   * Upsert next
+   * Upsert Next
    * @param {number} id
    * @return {object}
    */

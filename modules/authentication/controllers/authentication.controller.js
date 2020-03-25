@@ -11,7 +11,7 @@ const service = require(path.resolve(
 require(path.resolve('./modules/authentication/strategies/local.js'));
 
 /**
- * Get user by id
+ * Get User By Id
  * @async
  * @param {number} userId
  * @return {object}
@@ -24,7 +24,7 @@ const getUserById = async (userId) => {
 };
 
 /**
- * Deserialize user
+ * Deserialize User
  * @callback done
  * @param {function}
  */
@@ -35,7 +35,7 @@ passport.deserializeUser(async (userId, done) => {
 });
 
 /**
- * Serialize user
+ * Serialize User
  * @callback done
  * @param {function}
  */

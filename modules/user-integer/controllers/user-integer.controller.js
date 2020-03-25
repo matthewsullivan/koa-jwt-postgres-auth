@@ -26,7 +26,7 @@ module.exports = {
   },
 
   /**
-   * Upsert current
+   * Upsert Current
    * @async
    * @param {object} ctx
    */
@@ -64,7 +64,7 @@ module.exports = {
   },
 
   /**
-   * Upsert next
+   * Upsert Next
    * @async
    * @param {object} ctx
    */

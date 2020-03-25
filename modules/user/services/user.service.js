@@ -5,7 +5,7 @@ const {sql} = require('pg-extra');
 
 module.exports = {
   /**
-   * Get user by id
+   * Get User By Id
    * @param {number} userId
    * @return {object}
    */
@@ -20,7 +20,7 @@ module.exports = {
   },
 
   /**
-   * Register user
+   * Register User
    * @param {object} user
    * @return {object}
    */

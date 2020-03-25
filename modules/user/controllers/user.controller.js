@@ -8,7 +8,7 @@ const service = require(path.resolve(
 ));
 
 /**
- * Encrypt password
+ * Encrypt Password
  * @async
  * @param {string} password
  * @return {object}
@@ -35,7 +35,7 @@ const testEmailValidity = (ctx) => {
 };
 
 /**
- * Test password strength
+ * Test password Strength
  * @param {object} ctx
  * @return {array}
  */
@@ -49,7 +49,7 @@ const testPasswordStrength = (ctx) => {
 
 module.exports = {
   /**
-   * Get user
+   * Get User
    * @async
    * @param {object} ctx
    */
