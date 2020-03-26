@@ -8,7 +8,7 @@ const service = require(path.resolve(
   './modules/user/services/user.service.js'
 ));
 
-require(path.resolve('./modules/authentication/strategies/local.js'));
+require(path.resolve('./config/lib/passport/strategies/local'));
 
 /**
  * Get User By Id

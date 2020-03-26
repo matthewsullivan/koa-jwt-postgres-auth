@@ -6,7 +6,7 @@ const controller = require(path.resolve(
   './modules/user/controllers/user.controller.js'
 ));
 
-require(path.resolve('./modules/user/strategies/jwt.js'));
+require(path.resolve('./config/lib/passport/strategies/jwt'));
 
 /**
  * Secured
