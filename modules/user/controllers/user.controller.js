@@ -172,6 +172,7 @@ module.exports = {
 
       ctx.status = 200;
     } catch {
+      console.log(ctx.body);
       ctx.status = 400;
 
       ctx.body = {

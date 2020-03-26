@@ -52,6 +52,7 @@ module.exports = {
         last_name = TRIM(${user.lastName}),
         updated = now()
       WHERE id = ${user.id}
+      ON CONFLICT (user_id) DO NOTHING
       RETURNING id, username, email, first_name, last_name, created, updated;
     `;
 
