@@ -49,7 +49,7 @@ router
   .get('/api/v1/profile/:id', secured, controller.getUser)
 
   .post('/api/v1/user/password', secured, controller.updatePassword)
-  .post('/api/v1/users/profile/:id', secured, controller.updateProfile)
+  .post('/api/v1/users/profile', secured, controller.updateProfile)
   .post('/api/v1/register', controller.registerUser);
 
 module.exports = router;

@@ -106,11 +106,38 @@ test.serial('Should update password', async (t) => {
 
   const token = loginResponse.body.data.attributes.access_token;
 
-  const response = await request
+  const responseA = await request
     .post('/api/v1/user/password/')
     .send({password: '!a1B2c3D4e5F6g!'})
     .set('Authorization', `Bearer ${token}`);
 
+  const responseB = await request
+    .post('/api/v1/user/password/')
+    .send({password: user.password})
+    .set('Authorization', `Bearer ${token}`);
+
   t.is(loginResponse.status, 200);
-  t.is(response.status, 200);
+  t.is(responseA.status, 200);
+  t.is(responseB.status, 200);
+});
+
+test.serial('Should not update profile with existing email', async (t) => {
+  const loginResponse = await request.post('/api/v1/login').send({
+    email: user.email,
+    password: user.password,
+  });
+
+  const token = loginResponse.body.data.attributes.access_token;
+
+  const response = await request
+    .post('/api/v1/user/profile/')
+    .send({
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    })
+    .set('Authorization', `Bearer ${token}`);
+
+  t.is(loginResponse.status, 200);
+  t.is(response.status, 400);
 });
