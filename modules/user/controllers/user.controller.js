@@ -154,10 +154,13 @@ module.exports = {
 
     const data = ctx.request.body;
 
+    data.email = ctx.token.email;
     data.id = ctx.token.id;
 
-    const responseA = await service.getUserByEmail(data);
+    const responseA = await service.getUserByEmail(data.email);
     const userA = responseA.rows[0];
+
+    console.log(responseA);
 
     if (userA && userA.id === data.id) {
       ctx.status = 400;
