@@ -129,6 +129,15 @@ module.exports = {
   },
 
   /**
+   * Update Profile
+   * @async
+   * @param {object} ctx
+   */
+  updateProfile: async (ctx) => {
+    const body = ctx.request.body;
+  },
+
+  /**
    * Register User
    * @async
    * @param {object} ctx
