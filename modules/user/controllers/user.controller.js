@@ -154,7 +154,6 @@ module.exports = {
 
     const data = ctx.request.body;
 
-    data.email = ctx.token.email;
     data.id = ctx.token.id;
 
     const responseA = await service.getUserByEmail(data.email);
