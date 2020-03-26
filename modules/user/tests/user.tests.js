@@ -80,3 +80,37 @@ test.serial('Should login and allow access to secured route', async (t) => {
   t.is(profileResponse.status, 200);
   t.is(email, 'johndoe@localhost.com');
 });
+
+test.serial('Should not allow weak password update', async (t) => {
+  const loginResponse = await request.post('/api/v1/login').send({
+    email: user.email,
+    password: user.password,
+  });
+
+  const token = loginResponse.body.data.attributes.access_token;
+
+  const response = await request
+    .post('/api/v1/user/password/')
+    .send({password: 'abcdefg'})
+    .set('Authorization', `Bearer ${token}`);
+
+  t.is(loginResponse.status, 200);
+  t.is(response.status, 400);
+});
+
+test.serial('Should update password', async (t) => {
+  const loginResponse = await request.post('/api/v1/login').send({
+    email: user.email,
+    password: user.password,
+  });
+
+  const token = loginResponse.body.data.attributes.access_token;
+
+  const response = await request
+    .post('/api/v1/user/password/')
+    .send({password: '!a1B2c3D4e5F6g!'})
+    .set('Authorization', `Bearer ${token}`);
+
+  t.is(loginResponse.status, 200);
+  t.is(response.status, 200);
+});

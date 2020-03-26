@@ -20,6 +20,24 @@ module.exports = {
   },
 
   /**
+   * Update Password
+   * @param {object} user
+   * @return {object}
+   */
+  updatePassword: (user) => {
+    const statement = sql`
+      UPDATE public.user
+      SET 
+        password = ${user.password},
+        updated = now()
+      WHERE id = ${user.id}
+      RETURNING id;
+    `;
+
+    return pool.query(statement);
+  },
+
+  /**
    * Register User
    * @param {object} user
    * @return {object}

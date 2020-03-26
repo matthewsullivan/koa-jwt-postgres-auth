@@ -37,6 +37,7 @@ const secured = async (ctx, next) => {
         return;
       }
 
+      ctx.token = token;
       ctx.status = 200;
 
       return next();
@@ -47,6 +48,7 @@ const secured = async (ctx, next) => {
 router
   .get('/api/v1/profile/:id', secured, controller.getUser)
 
+  .post('/api/v1/user/password', secured, controller.updatePassword)
   .post('/api/v1/register', controller.registerUser);
 
 module.exports = router;

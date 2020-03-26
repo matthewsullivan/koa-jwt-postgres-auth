@@ -35,7 +35,7 @@ const testEmailValidity = (ctx) => {
 };
 
 /**
- * Test password Strength
+ * Test Password Strength
  * @param {object} ctx
  * @return {array}
  */
@@ -78,12 +78,54 @@ module.exports = {
         attributes: {
           user: user,
         },
-        id: 2,
         type: 'user',
       },
     };
 
     ctx.status = 200;
+  },
+
+  /**
+   * Update Password
+   * @async
+   * @param {object} ctx
+   */
+  updatePassword: async (ctx) => {
+    const passwordErrors = testPasswordStrength(ctx);
+
+    if (!!passwordErrors.length) {
+      ctx.status = 400;
+
+      ctx.body = {
+        errors: [
+          {
+            detail: passwordErrors,
+            status: ctx.status,
+            title: 'Password Strength.',
+          },
+        ],
+      };
+
+      return;
+    }
+
+    const data = ctx.request.body;
+
+    data.password = await encryptPassword(data.password);
+    data.id = ctx.token.id;
+
+    const response = await service.updatePassword(data);
+
+    if (response.rowCount) {
+      ctx.body = {
+        data: {
+          title: 'Succesfully Updated Password.',
+          type: 'user',
+        },
+      };
+
+      ctx.status = 200;
+    }
   },
 
   /**

@@ -9,5 +9,6 @@ CREATE TABLE public.user
   last_name varchar(256) NOT NULL,
   password varchar(256) NOT NULL,
   
-  created timestamptz DEFAULT now() NOT NULL
+  created timestamptz DEFAULT now() NOT NULL,
+  updated timestamptz DEFAULT now() NOT NULL
 );
