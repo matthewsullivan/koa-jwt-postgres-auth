@@ -38,6 +38,27 @@ module.exports = {
   },
 
   /**
+   * Update profile
+   * @param {object} user
+   * @return {object}
+   */
+  updateProfile: (user) => {
+    const statement = sql`
+      UPDATE public.user
+      SET 
+        email = TRIM(${user.email.toLowerCase()}),
+        username = TRIM(${user.username}),
+        first_name = TRIM(${user.firstName}),
+        last_name = TRIM(${user.lastName}),
+        updated = now()
+      WHERE id = ${user.id}
+      RETURNING id, username, email, first_name, last_name, created, updated;
+    `;
+
+    return pool.query(statement);
+  },
+
+  /**
    * Register User
    * @param {object} user
    * @return {object}
