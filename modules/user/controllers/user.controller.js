@@ -134,7 +134,56 @@ module.exports = {
    * @param {object} ctx
    */
   updateProfile: async (ctx) => {
-    const body = ctx.request.body;
+    const emailErrors = testEmailValidity(ctx);
+
+    if (!emailErrors) {
+      ctx.status = 400;
+
+      ctx.body = {
+        errors: [
+          {
+            detail: 'Updated email is invalid.',
+            status: ctx.status,
+            title: 'Invalid Email.',
+          },
+        ],
+      };
+
+      return;
+    }
+
+    try {
+      const data = ctx.request.body;
+
+      data.id = ctx.token.id;
+
+      const response = await service.registerUser(data);
+      const user = response.rows[0];
+
+      ctx.body = {
+        attributes: {
+          user: user,
+        },
+        data: {
+          title: 'Succesfully Updated Profile.',
+          type: 'user',
+        },
+      };
+
+      ctx.status = 200;
+    } catch {
+      ctx.status = 400;
+
+      ctx.body = {
+        errors: [
+          {
+            detail: 'The updated email exists already.',
+            status: ctx.status,
+            title: 'Email Taking.',
+          },
+        ],
+      };
+    }
   },
 
   /**
@@ -178,11 +227,11 @@ module.exports = {
       return;
     }
 
-    const data = ctx.request.body;
-
-    data.password = await encryptPassword(data.password);
-
     try {
+      const data = ctx.request.body;
+
+      data.password = await encryptPassword(data.password);
+
       const response = await service.registerUser(data);
       const user = response.rows[0];
 
@@ -205,7 +254,7 @@ module.exports = {
           {
             detail: 'A user with the same email exists.',
             status: ctx.status,
-            title: 'User exists.',
+            title: 'User Exists.',
           },
         ],
       };
