@@ -5,6 +5,21 @@ const {sql} = require('pg-extra');
 
 module.exports = {
   /**
+   * Get User By Email
+   * @param {string} email
+   * @return {object}
+   */
+  getUserByEmail: (email) => {
+    const statement = sql`
+      SELECT id, email, first_name, last_name, created, updated 
+      FROM public.user
+      WHERE email = ${email};
+    `;
+
+    return pool.query(statement);
+  },
+
+  /**
    * Get User By Id
    * @param {number} userId
    * @return {object}
@@ -47,13 +62,11 @@ module.exports = {
       UPDATE public.user
       SET 
         email = TRIM(${user.email.toLowerCase()}),
-        username = TRIM(${user.username}),
         first_name = TRIM(${user.firstName}),
         last_name = TRIM(${user.lastName}),
         updated = now()
       WHERE id = ${user.id}
-      ON CONFLICT (user_id) DO NOTHING
-      RETURNING id, username, email, first_name, last_name, created, updated;
+      RETURNING id, email, first_name, last_name, created, updated;
     `;
 
     return pool.query(statement);

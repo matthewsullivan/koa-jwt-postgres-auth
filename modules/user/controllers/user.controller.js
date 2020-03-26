@@ -152,39 +152,43 @@ module.exports = {
       return;
     }
 
-    try {
-      const data = ctx.request.body;
+    const data = ctx.request.body;
 
-      data.id = ctx.token.id;
+    data.id = ctx.token.id;
 
-      const response = await service.registerUser(data);
-      const user = response.rows[0];
+    const responseA = await service.getUserByEmail(data);
+    const userA = responseA.rows[0];
 
-      ctx.body = {
-        attributes: {
-          user: user,
-        },
-        data: {
-          title: 'Succesfully Updated Profile.',
-          type: 'user',
-        },
-      };
-
-      ctx.status = 200;
-    } catch {
-      console.log(ctx.body);
+    if (userA && userA.id === data.id) {
       ctx.status = 400;
 
       ctx.body = {
         errors: [
           {
-            detail: 'The updated email exists already.',
+            detail: 'Email already exists.',
             status: ctx.status,
             title: 'Email Taking.',
           },
         ],
       };
+
+      return;
     }
+
+    const responseB = await service.updateProfile(data);
+    const userB = responseB.rows[0];
+
+    ctx.body = {
+      attributes: {
+        user: userB,
+      },
+      data: {
+        title: 'Succesfully Updated Profile.',
+        type: 'user',
+      },
+    };
+
+    ctx.status = 200;
   },
 
   /**
