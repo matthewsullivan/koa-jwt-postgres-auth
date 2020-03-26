@@ -142,7 +142,7 @@ module.exports = {
       ctx.body = {
         errors: [
           {
-            detail: 'Updated email is invalid.',
+            detail: 'Email field is not a valid email.',
             status: ctx.status,
             title: 'Invalid Email.',
           },
