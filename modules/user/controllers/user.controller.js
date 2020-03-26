@@ -160,9 +160,7 @@ module.exports = {
     const responseA = await service.getUserByEmail(data.email);
     const userA = responseA.rows[0];
 
-    console.log(responseA);
-
-    if (userA && userA.id === data.id) {
+    if (userA && userA.id !== data.id) {
       ctx.status = 400;
 
       ctx.body = {
