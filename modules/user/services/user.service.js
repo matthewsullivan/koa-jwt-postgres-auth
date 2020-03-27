@@ -53,7 +53,7 @@ module.exports = {
   },
 
   /**
-   * Update profile
+   * Update Profile
    * @param {object} user
    * @return {object}
    */
