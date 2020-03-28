@@ -1,7 +1,7 @@
 const {test} = require('ava');
 
 const path = require('path');
-const server = require(path.resolve('./server.js'));
+const server = require(path.resolve('./app.js'));
 
 const request = require('supertest').agent(server.listen());
 

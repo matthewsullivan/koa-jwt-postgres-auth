@@ -41,7 +41,7 @@
   "homepage": "https://github.com/matthewsullivan/simple-api#readme",
   "keywords": [],
   "license": "MIT",
-  "main": "server.js",
+  "main": "app.js",
   "name": "simple-api",
   "repository": {
     "type": "git",
@@ -51,8 +51,8 @@
     "db-init": "npm init -f && npm run -s db-tables && npm run -s db-seed",
     "db-tables": "find modules/*/models/tables -name *.sql -exec psql -d $npm_package_config_db_database -U postgres -h localhost -f {} \\;",
     "db-seed": "node ./config/lib/seed.js",
-    "debug": "NODE_ENV=development && nodemon --inspect server.js",
-    "start": "NODE_ENV=production && node server.js",
+    "debug": "NODE_ENV=development && nodemon --inspect app.js",
+    "start": "NODE_ENV=production && node app.js",
     "test": "NODE_ENV=test && ava modules/*/tests/*.js -s -v"
   },
   "version": "1.0.0"
