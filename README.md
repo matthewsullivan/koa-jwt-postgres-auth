@@ -12,7 +12,7 @@ Install Postgres
 
 Create database
 
-    $ createdb simple_api
+    $ createdb kjpa_test
 
 ## Setup
 

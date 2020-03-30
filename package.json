@@ -5,7 +5,7 @@
   },
   "config": {
     "db": {
-      "database": "simple_api"
+      "database": "kjpa_test"
     }
   },
   "description": "koa-jwt-postgres-auth",
