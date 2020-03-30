@@ -1,14 +1,14 @@
 {
   "author": "Matthew Sullivan",
   "bugs": {
-    "url": "https://github.com/matthewsullivan/simple-api/issues"
+    "url": "https://github.com/matthewsullivan/koa-jwt-postgres-auth/issues"
   },
   "config": {
     "db": {
       "database": "simple_api"
     }
   },
-  "description": "simple-api",
+  "description": "koa-jwt-postgres-auth",
   "dependencies": {
     "argon2": "^0.15.0",
     "email-validator": "^2.0.4",
@@ -39,14 +39,14 @@
   "engines": {
     "node": ">=8.9.1 <11.10.0"
   },
-  "homepage": "https://github.com/matthewsullivan/simple-api#readme",
+  "homepage": "https://github.com/matthewsullivan/koa-jwt-postgres-auth#readme",
   "keywords": [],
   "license": "MIT",
   "main": "app.js",
-  "name": "simple-api",
+  "name": "koa-jwt-postgres-auth",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/matthewsullivan/simple-api.git"
+    "url": "git+https://github.com/matthewsullivan/koa-jwt-postgres-auth.git"
   },
   "scripts": {
     "db-init": "npm init -f && npm run -s db-tables && npm run -s db-seed",
