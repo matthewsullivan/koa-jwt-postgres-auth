@@ -6,7 +6,7 @@ const controller = require(path.resolve(
 
 const seed = (() => {
   /**
-   * Register user
+   * Register User
    * @async
    */
   const registerUser = async () => {
