@@ -72,8 +72,6 @@ module.exports = {
           return;
         }
 
-        const expiration = '1h';
-
         const token = jwt.sign(
           {
             email: user.email,
@@ -81,7 +79,7 @@ module.exports = {
           },
           config.secret,
           {
-            expiresIn: expiration,
+            expiresIn: config.expiration,
           }
         );
 
@@ -90,7 +88,7 @@ module.exports = {
             attributes: {
               access_token: token,
               token_type: 'Bearer',
-              expires_in: expiration,
+              expires_in: config.expiration,
             },
             detail: 'Logged in and generated bearer token.',
             title: 'Succesful Login.',

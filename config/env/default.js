@@ -28,6 +28,7 @@ if (process.env.DATABASE_URL) {
 
 const config = {
   db,
+  expiration: process.env.JWT_EXPIRATION || '1h',
   secret: process.env.JWT_SECRET || 'jwt-secret',
   server: {
     port: process.env.PORT || 3000,
