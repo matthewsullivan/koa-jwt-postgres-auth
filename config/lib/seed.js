@@ -6,6 +6,14 @@ const controller = require(path.resolve(
 
 const seed = (() => {
   /**
+   * Init
+   * @async
+   */
+  const init = async () => {
+    await registerUser();
+  };
+
+  /**
    * Register User
    * @async
    */
@@ -28,14 +36,6 @@ const seed = (() => {
     ctx.request.body = user;
 
     await controller.registerUser(ctx);
-  };
-
-  /**
-   * Init
-   * @async
-   */
-  const init = async () => {
-    await registerUser();
   };
 
   return {
