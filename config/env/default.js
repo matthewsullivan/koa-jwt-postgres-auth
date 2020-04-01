@@ -1,21 +1,23 @@
 const process = require('process');
+const url = require('url');
 
 let db = {};
 
 if (process.env.DATABASE_URL) {
-  const url = require('url');
-
   const params = url.parse(process.env.DATABASE_URL);
 
   const auth = params.auth.split(':');
+  const database = params.pathname.split('/')[1];
+  const password = auth[1];
+  const user = auth[0];
 
   db = {
-    database: params.pathname.split('/')[1],
-    dialect: process.env.DB_DIALECT,
+    database: database,
+    dialect: 'postgres',
     host: params.hostname,
-    password: auth[1],
+    password: password,
     port: params.port,
-    user: auth[0],
+    user: user,
   };
 } else {
   db = {
