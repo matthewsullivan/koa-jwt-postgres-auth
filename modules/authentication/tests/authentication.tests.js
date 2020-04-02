@@ -1,9 +1,8 @@
-const {test} = require('ava');
-
 const path = require('path');
-const server = require(path.resolve('./app.js'));
+const test = require('ava');
 
-const request = require('supertest').agent(server.listen());
+const app = require(path.resolve('./app.js'));
+const request = require('supertest').agent(app.listen());
 
 const user = {
   email: 'johndoe@localhost.com',
