@@ -1,7 +1,7 @@
 <img alt="Stack Logos" src="https://www.static.matthewsullivan.media/kjp.png" width="480" />
 
 ## Koa, JWT, and Postgres Authentication
-Lightweight user registration API that returns stateless [json web tokens](https://jwt.io/) to access secured routes.
+Lightweight user registration/login API that returns stateless [json web tokens](https://jwt.io/) to access secured routes.
 
 #### Installation
 See [Local Development Wiki](https://github.com/matthewsullivan/koa-jwt-postgres-auth/wiki/Development-::-Local)
