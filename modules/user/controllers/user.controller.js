@@ -206,7 +206,7 @@ module.exports = {
       ctx.body = {
         errors: [
           {
-            detail: 'A valid email must be utlized to register.',
+            detail: 'A valid email must be utilized to register.',
             status: ctx.status,
             title: 'Invalid Email.',
           },
