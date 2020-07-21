@@ -24,7 +24,7 @@ if (process.env.DATABASE_URL) {
     database: 'kjpa_test',
     dialect: 'postgres',
     host: 'localhost',
-    port: 5432,
+    port: 5433,
   };
 }
 

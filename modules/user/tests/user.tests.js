@@ -12,7 +12,7 @@ const user = {
 };
 
 test.serial('Registration should not allow invalid email', async (t) => {
-  const response = await request.post('/api/v1/register/').send({
+  const response = await request.post('/api/v1/register').send({
     email: 'jane',
     firstName: user.firstName,
     lastName: user.lastName,
@@ -23,7 +23,7 @@ test.serial('Registration should not allow invalid email', async (t) => {
 });
 
 test.serial('Registration should not allow weak password', async (t) => {
-  const response = await request.post('/api/v1/register/').send({
+  const response = await request.post('/api/v1/register').send({
     email: user.email,
     firstName: user.firstName,
     lastName: user.lastName,
@@ -34,7 +34,7 @@ test.serial('Registration should not allow weak password', async (t) => {
 });
 
 test.serial('Registration should not allow duplicate email', async (t) => {
-  const response = await request.post('/api/v1/register/').send({
+  const response = await request.post('/api/v1/register').send({
     email: 'johndoe@localhost.com',
     firstName: user.firstName,
     lastName: user.lastName,
@@ -45,7 +45,7 @@ test.serial('Registration should not allow duplicate email', async (t) => {
 });
 
 test.serial('Should register valid user', async (t) => {
-  const response = await request.post('/api/v1/register/').send({
+  const response = await request.post('/api/v1/register').send({
     email: user.email,
     firstName: user.firstName,
     lastName: user.lastName,
@@ -89,7 +89,7 @@ test.serial('Should not allow weak password update', async (t) => {
   const token = loginResponse.body.data.attributes.access_token;
 
   const response = await request
-    .post('/api/v1/user/password/')
+    .post('/api/v1/user/password')
     .send({password: 'abcdefg'})
     .set('Authorization', `Bearer ${token}`);
 
@@ -106,12 +106,12 @@ test.serial('Should update password', async (t) => {
   const token = loginResponse.body.data.attributes.access_token;
 
   const responseA = await request
-    .post('/api/v1/user/password/')
+    .post('/api/v1/user/password')
     .send({password: '!a1B2c3D4e5F6g!'})
     .set('Authorization', `Bearer ${token}`);
 
   const responseB = await request
-    .post('/api/v1/user/password/')
+    .post('/api/v1/user/password')
     .send({password: user.password})
     .set('Authorization', `Bearer ${token}`);
 
@@ -129,7 +129,7 @@ test.serial('Should not update profile with invalid email', async (t) => {
   const token = loginResponse.body.data.attributes.access_token;
 
   const response = await request
-    .post('/api/v1/user/profile/')
+    .post('/api/v1/user/profile')
     .send({
       email: 'jane',
       firstName: user.firstName,
@@ -150,7 +150,7 @@ test.serial('Should not update profile with existing email', async (t) => {
   const token = loginResponse.body.data.attributes.access_token;
 
   const response = await request
-    .post('/api/v1/user/profile/')
+    .post('/api/v1/user/profile')
     .send({
       email: 'johndoe@localhost.com',
       firstName: user.firstName,
@@ -171,7 +171,7 @@ test.serial('Should update profile', async (t) => {
   const token = loginResponse.body.data.attributes.access_token;
 
   const response = await request
-    .post('/api/v1/user/profile/')
+    .post('/api/v1/user/profile')
     .send({
       email: user.email,
       firstName: user.firstName,
