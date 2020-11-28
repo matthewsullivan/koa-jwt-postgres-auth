@@ -87,8 +87,8 @@ module.exports = {
           data: {
             attributes: {
               access_token: token,
-              token_type: 'Bearer',
               expires_in: config.expiration,
+              token_type: 'Bearer',
             },
             detail: 'Logged in and generated bearer token.',
             title: 'Succesful Login.',
