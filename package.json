@@ -56,5 +56,5 @@
     "start": "NODE_ENV=production && node app.js",
     "test": "NODE_ENV=test && ava modules/*/tests/*.js -s -v"
   },
-  "version": "1.0.2"
+  "version": "1.0.3"
 }
